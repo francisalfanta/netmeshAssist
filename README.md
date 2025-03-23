@@ -33,6 +33,7 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Release Notes
 
+## [Android APK v1.0.0](https://drive.google.com/file/d/1OZtMTMN_QWgK_73-J2Lyn1FuvEEOjrEU/view?usp=drive_link)
 **March 23**  
 Currently undergoing testing on all Android device. Please report any bugs by creating an issue.
 
