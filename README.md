@@ -34,6 +34,11 @@ samples, guidance on mobile development, and a full API reference.
 ## Release Notes
 
 ## [Android APK v1.0.0](https://drive.google.com/file/d/1OZtMTMN_QWgK_73-J2Lyn1FuvEEOjrEU/view?usp=drive_link)
+
+[Introduction to Getting Started with NetMeshEasyAid](https://drive.google.com/file/d/147S5ZxCn_OZYKkAeIHigYXV3QU-pqdm_/view?usp=sharing)
+
+This guide helps you quickly get started with the NetMeshEasyAid app. It walks you through the setup process, starting from installation to understanding the basic functionalities and how to make the most out of the app. You’ll learn the key steps to get your project up and running with ease, including configuring your environment and using the core features effectively.
+
 **March 23**  
 Currently undergoing testing on all Android device. Please report any bugs by creating an issue.
 
