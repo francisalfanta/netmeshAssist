@@ -31,9 +31,15 @@ samples, guidance on mobile development, and a full API reference.
 |-------------|--------------|
 | <div align="center"><img src="https://github.com/user-attachments/assets/6af97bcc-01fe-4537-b357-071958f43625" width="25%" /></div> | <div align="center"><img src="https://github.com/user-attachments/assets/08e78679-bd20-495c-bba9-19b1934025da" width="25%" /></div> |
 
-## Release Notes
+### 📱 Android Version Compatibility
 
-## [Android APK v1.0.0](https://drive.google.com/file/d/1OZtMTMN_QWgK_73-J2Lyn1FuvEEOjrEU/view?usp=drive_link)
+This Flutter app supports:
+- Min SDK: 21 (Android 5.0 - Lollipop, Released in 2014)
+- Target SDK: 35 (Android 14, Released in 2024)
+  
+### Release Notes
+
+##### [Android APK v1.0.2](https://drive.google.com/file/d/1OZtMTMN_QWgK_73-J2Lyn1FuvEEOjrEU/view?usp=drive_link)
 
 [Introduction to Getting Started with NetMeshEasyAid](https://drive.google.com/file/d/147S5ZxCn_OZYKkAeIHigYXV3QU-pqdm_/view?usp=sharing)
 
