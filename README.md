@@ -1,4 +1,4 @@
-# Net Mesh Speedtest Easy Aid
+# Net Mesh Speedtest Assist
 
 Features
 - Automatic Entry from Screenshot
