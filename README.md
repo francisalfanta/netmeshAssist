@@ -5,11 +5,14 @@ Features
     -- Automatically enters data from the Speed Test screenshot taken from the History page for easy access.
 - Export Data (XLSX/CSV)
     -- Allows users to export the generated table in either XLSX or CSV format for further analysis or reporting.
+- Export Format Ready
+    -- Net Mesh export table format
+    -- Mobile Broadband Speed Validation Report format
 
 Limitation
 - The app is exclusively available for Android.
 - Google Geolocation API Request Limit
-    -- The app uses Google Geolocation API with a maximum of 1677 free requests per day.
+    -- The app uses Google Geolocation API with a maximum of 1333 free requests per day.
 - Effect Beyond
     -- Limit	If the daily limit is exceeded, the Region, Province, Municipality, or Barangay columns will remain blank.
 
@@ -39,7 +42,22 @@ This Flutter app supports:
   
 ### Release Notes
 
-##### [Android APK v1.0.3](https://drive.google.com/file/d/1OZtMTMN_QWgK_73-J2Lyn1FuvEEOjrEU/view?usp=drive_link)
+##### [Android APK v1.0.6]([https://drive.google.com/file/d/1OZtMTMN_QWgK_73-J2Lyn1FuvEEOjrEU/view?usp=drive_link](https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=sharing)
+
+March 26, 2025
+ - Used Google Geocoding API instead than Geoapify for more accuracy.
+ - Added Clear lists button
+ - Added Export to xlsx formatted to MobileBroadband Speed Validation Report
+ - Fixed Date out when date character contain spaces in between.
+
+ March 25, 2025
+ - Added short name for providers
+
+ March 24, 2025
+ - Fixed issue with exporting
+
+ March 23, 2025
+ - Initial launch, testing different type of History Report image.
 
 [Introduction to Getting Started with NetMeshEasyAid](https://drive.google.com/file/d/147S5ZxCn_OZYKkAeIHigYXV3QU-pqdm_/view?usp=sharing)
 
