@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final Function(BuildContext, String, String) showModal;
+  final VoidCallback onClear;
 
-  const AppBarWidget({required this.showModal, Key? key}) : super(key: key);
+  const AppBarWidget({required this.showModal, required this.onClear, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,49 +31,43 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.article),
-          tooltip: "Release Notes",
+          icon: const Icon(Icons.info_outline),
+          tooltip: "App Info",
           onPressed: () => showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Release Notes"),
+                title: const Text("App Information", style: TextStyle(fontSize: 18)),
                 content: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Version 1.0.0",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      const Text("Version 1.0.6", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      const Text("Release Date: March 23, 2025", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
+                      const Text("https://github.com/francisalfanta/netmeshEasyAid", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
+                      const SizedBox(height: 12),
+                      const Text("Features:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      _buildListItem(Icons.check, "Automatic Data Entry", ["Automatically extracts data from Speed Test screenshots.",]),
+                      _buildListItem(Icons.check, "Export Data", ["Supports XLSX and CSV export for analysis.",]),
+                      _buildListItem(
+                        Icons.check,
+                        "Export Format Ready",
+                        [
+                          "Net Mesh export table format",
+                          "Mobile Broadband Speed Validation Report format",
+                        ],
                       ),
-                      Text(
-                        "Release Date: March 23, 2025",
-                        style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14),
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        "New Features:",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.check, size: 16),
-                        title: Text("Automatic Data Entry"),
-                        subtitle: Text(
-                            "Automatically enters data from the Speed Test screenshot taken from the History page."),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.check, size: 16),
-                        title: Text("Export Data"),
-                        subtitle: Text(
-                            "Users can now export data in XLSX or CSV format for further analysis."),
-                      ),
+                      const SizedBox(height: 12),
+                      const Text("Limitations:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      _buildListItem(Icons.warning, "Google Geocoding API Limit", ["Max 1,333 free requests per day."]),
+                      _buildListItem(Icons.warning, "Effect Beyond Limit", ["Region, Province, Municipality, and Barangay fields remain blank after limit is reached."]),
                     ],
                   ),
                 ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text("Close"),
+                    child: const Text("Close"),
                   ),
                 ],
               );
@@ -80,85 +75,29 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         IconButton(
-          icon: Icon(Icons.info_outline),
-          tooltip: "App Scope",
-          onPressed: () => showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("App Scope"),
-                content: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Features",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SizedBox(height: 8),
-                      ListTile(
-                        leading: Icon(Icons.check, size: 16),
-                        title: Text(
-                          "Automatic Entry from Screenshot",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          "Automatically enters data from the Speed Test screenshot taken from the History page for easy access.",
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.check, size: 16),
-                        title: Text(
-                          "Export/Share Data (XLSX/CSV)",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          "Allows users to export the generated table in either XLSX or CSV format for further analysis or reporting.",
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        "Limitation",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SizedBox(height: 8),
-                      ListTile(
-                        leading: Icon(Icons.warning, size: 16),
-                        title: Text(
-                          "Google Geolocation API Request Limit",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          "The app uses Google Geolocation API with a maximum of 1677 free requests per day.",
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.warning, size: 16),
-                        title: Text(
-                          "Effect Beyond Limit",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          "If the daily limit is exceeded, the Region, Province, Municipality, or Barangay columns will remain blank.",
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text("Close"),
-                  ),
-                ],
-              );
-            },
-          ),
-        )
-
+          icon: Icon(Icons.clear_outlined, color: Colors.redAccent,),
+          tooltip: "Clear Data",
+          onPressed: onClear, // Calls the onClear function when pressed
+        ),
       ],
     );
   }
+
+  Widget _buildListItem(IconData icon, String title, List<String> descriptions) {
+    return ListTile(
+      leading: Icon(icon, size: 16),
+      title: Text(
+        title,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: descriptions.map((desc) => Text("• $desc")).toList(),
+      ),
+    );
+  }
+
+
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);

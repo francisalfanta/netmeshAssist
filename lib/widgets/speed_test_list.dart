@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:netmeshelperv2/utils/signal_helper.dart'; // ✅ Import the file
+import 'package:netmeshAssist/utils/signal_helper.dart'; // ✅ Import the file
 
 class SpeedTestList extends StatelessWidget {
   final List<Map<String, dynamic>> speedTestData;
@@ -7,11 +7,11 @@ class SpeedTestList extends StatelessWidget {
   final bool isLoading; // Add a loading state
 
   const SpeedTestList({
-    Key? key,
+    super.key,
     required this.speedTestData,
     required this.getSignalColor,
     required this.isLoading, // Accept the isLoading parameter
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,17 @@ class SpeedTestList extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Expanded(flex: 1, child: Center(child: Icon(Icons.location_pin, color: Colors.blue, size: 20))),
-                        Expanded(flex: 6, child: Text(speedTestData[index]["Location"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis)),
+                        Expanded(
+                          flex: 6,
+                          child: Tooltip(
+                            message: speedTestData[index]["Formatted Address"] ?? "??", // Full location
+                            child: Text(
+                              speedTestData[index]["Location"] ?? "??",
+                              style: const TextStyle(fontSize: 10),
+                              overflow: TextOverflow.ellipsis, // Ensures text is truncated
+                            ),
+                          ),
+                        ),
                         Expanded(flex: 2, child: Text(speedTestData[index]["Ping"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
                         Expanded(flex: 2, child: Text(speedTestData[index]["Jitter"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
                         Expanded(flex: 2, child: Text(speedTestData[index]["Network Type"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),

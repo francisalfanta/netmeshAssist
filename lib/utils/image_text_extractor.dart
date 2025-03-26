@@ -8,8 +8,8 @@ class ImageTextExtractor {
 
   Future<List<Map<String, dynamic>?>> extractTextFromPickedImage() async {
     //final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    final List<XFile>? images = await _picker.pickMultiImage();
-    if (images == null || images.isEmpty) return [];
+    final List<XFile> images = await _picker.pickMultiImage();
+    if (images.isEmpty) return [];
 
     List<Map<String, dynamic>> extractedData = [];
 
@@ -31,10 +31,12 @@ class ImageTextExtractor {
   Future<List<Map<String, dynamic>>> _extractTextFromImage(File imageFile) async {
     final inputImage = InputImage.fromFile(imageFile);
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
-    final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+    //final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
 
     try {
       final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+      //print('recognizedText');
+      //print(recognizedText.text);
       final parsedData = parseExtractedText(recognizedText.text);
 
       // Check if parsed data contains an error message

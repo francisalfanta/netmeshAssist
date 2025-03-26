@@ -1,0 +1,15 @@
+v1.0.6
+March 26, 2025
+ - Used Google Geocoding API instead than Geoapify for more accuracy.
+ - Added Clear lists button
+ - Added Export to xlsx formatted to MobileBroadband Speed Validation Report
+ - Fixed Date out when date character contain spaces in between.
+
+ March 25, 2025
+ - Added short name for providers
+
+ March 24, 2025
+ - Fixed issue with exporting
+
+ March 23, 2025
+ - Initial launch, testing different type of History Report image.
