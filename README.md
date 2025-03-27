@@ -2,7 +2,7 @@
 
 Features
 - Automatic Entry from Screenshot
-  -Automatically enters data from the Speed Test screenshot taken from the History page for easy access.
+  - Automatically enters data from the Speed Test screenshot taken from the History page for easy access.
     -- Ignore duplicate entries during upload.
 - Export Data (XLSX/CSV)
     -- Allows users to export the generated table in either XLSX or CSV format for further analysis or reporting.
