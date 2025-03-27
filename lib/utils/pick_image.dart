@@ -45,7 +45,7 @@ class PickImageHelper {
 
       extractedMap["formatted"] = addressDetails['formatted'] ?? '';
       extractedMap["region"] = addressDetails['region'] ?? '';
-      extractedMap["province"] = addressDetails['state'] ?? '';
+      extractedMap["province"] = addressDetails['province'] ?? '';
       extractedMap["municipality"] = addressDetails['city'] ?? '';
       extractedMap["barangay"] = addressDetails['suburb'] ?? '';
       extractedMap["nro"] = AddressHelper.getNTCCodeFromRegion(addressDetails);

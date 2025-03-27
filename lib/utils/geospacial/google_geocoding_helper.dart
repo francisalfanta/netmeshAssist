@@ -32,6 +32,7 @@ class Google_GeocodingService {
 
             for (var component in addressComponents) {
               List<String> types = List<String>.from(component["types"] ?? []);
+              print('component : $component');
 
               if (types.contains("sublocality_level_2")) {
                 print("Sublocality Level 2: ${component["long_name"]}");
@@ -56,7 +57,7 @@ class Google_GeocodingService {
                     formattedData["region"] = comp["long_name"] ?? "Unknown";
                   }
                 }
-
+                print('formattedData : $formattedData');
                 return formattedData; // Stop searching once found
               }
             }
@@ -73,7 +74,7 @@ class Google_GeocodingService {
       "suburb": "",
       "city": "",
       "region": "",
-      "state": "",
+      "province": "",
     };
   }
 }

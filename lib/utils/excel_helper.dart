@@ -97,6 +97,7 @@ class ExcelHelper {
       }).toList();
       //print(rowData);
       sheet.appendRow(rowData);
+      print ('rowData : $rowData');
     }
 
     String timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
