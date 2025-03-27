@@ -1,7 +1,7 @@
 # Net Mesh Speedtest Assist
 
 Features
-- Automatic Entry from Screenshot
+- Automatic Entry from Screenshot (JPG, JPEG, BMP, PNG files)
   - Automatically enters data from the Speed Test screenshot taken from the History page for easy access.
   - Ignore duplicate entries during upload.
 - Export Data (XLSX/CSV)
@@ -12,6 +12,7 @@ Features
 
 Limitation
 - The app is exclusively available for Android.
+- Supports image uploads only in the following formats: JPG, JPEG, BMP, and PNG.
 - Google Geolocation API Request Limit
   - The app uses Google Geolocation API with a maximum of 1333 free requests per day.
 - Effect Beyond
