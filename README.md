@@ -13,9 +13,9 @@ Features
 Limitation
 - The app is exclusively available for Android.
 - Google Geolocation API Request Limit
-    -- The app uses Google Geolocation API with a maximum of 1333 free requests per day.
+  - The app uses Google Geolocation API with a maximum of 1333 free requests per day.
 - Effect Beyond
-    -- Limit	If the daily limit is exceeded, the Region, Province, Municipality, or Barangay columns will remain blank.
+  - Limit	If the daily limit is exceeded, the Region, Province, Municipality, or Barangay columns will remain blank.
 
 ## Getting Started
 
