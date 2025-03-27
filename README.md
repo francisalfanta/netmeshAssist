@@ -44,7 +44,7 @@ This Flutter app supports:
   
 ### Release Notes
 
-##### [Android APK v1.0.6]([https://drive.google.com/file/d/1OZtMTMN_QWgK_73-J2Lyn1FuvEEOjrEU/view?usp=drive_link](https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=sharing)
+##### [Android APK v1.0.7]([https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=drive_link])
 
 March 26, 2025
  - Used Google Geocoding API instead than Geoapify for more accuracy.
