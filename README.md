@@ -20,17 +20,7 @@ Limitation
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+This is the project [write-up.](https://drive.google.com/file/d/1bYZinNMpYV1GYZPqJPvOvNHPCgOOuLAV/view?usp=sharing)
 
 | <div align="center"><b>Accepted Screenshot</b></div> | <div align="center"><b>Not Accepted Screenshot</b></div> |
 |-------------|--------------|
