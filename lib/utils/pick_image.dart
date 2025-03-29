@@ -67,10 +67,14 @@ class PickImageHelper {
         "Jitter": extractedMap["jitter"] ?? "??",
         "Network Type": extractedMap["network_type"] ?? "??",
         "Formatted Address" : extractedMap["formatted"] ?? "??",
+        "timestamp": extractedMap["timestamp"] ?? "??",
+        "email": extractedMap["email"] ?? "??",
       });
-
+      //print('speedTestDta : $speedTestData');
+      //print('extractedMap : $extractedMap');
       onextractedData.add(extractedMap);
     }
+
     onSpeedTestData(speedTestData);
     onExtractedData(onextractedData);
 

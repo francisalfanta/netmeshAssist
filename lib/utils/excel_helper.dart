@@ -29,12 +29,11 @@ class ExcelHelper {
 
     // ✅ Append each data row
     for (var data in extractedData) {
-      // print('Data :');
-      // print(data);
+      data["rssi"] = data["signal_strength"].split(" ")[0].trim();
       List<CellValue> rowData = headers.map((title) {
         return TextCellValue(data[title]?.toString() ?? ""); // Convert nulls to empty strings
       }).toList();
-      // print(rowData);
+
       sheet.appendRow(rowData);
     }
 
@@ -46,7 +45,7 @@ class ExcelHelper {
       directory = await getApplicationDocumentsDirectory();
     }
 
-    final filePath = "${directory!.path}/NetmesHEasyAid_$timestamp.xlsx";
+    final filePath = "${directory!.path}/NetmeshAssist_$timestamp.xlsx";
     File file = File(filePath);
 
     try {
@@ -60,7 +59,6 @@ class ExcelHelper {
   }
 
   Future<String?> saveToExcelMBSVReport(List<Map<String, dynamic>> extractedData) async {
-
     if (extractedData.isEmpty) {
       debugPrint("❌ No data to save.");
       return null;
@@ -82,33 +80,48 @@ class ExcelHelper {
       "nro", "province",  "municipality", "barangay","date","time", "network_type",
       "operator", "upload", "download","signal_strength", "signal_quality"
     ];
+
     // ✅ Append each data row
     for (var data in extractedData) {
       // Get Date & Time using  "timestamp"
-      data["date"] =  data["timestamp"].toString().split(" ")[0].trim();
-      data["time"] =  data["timestamp"].toString().split(" ")[1].trim();
-      data["signal_strength"] = data["signal_strength"].split(" ")[0].trim();
-      data["nro"] = AddressHelper.convertToRoman(data["nro"]);
-      //print( 'saveToExcelMBSVReport Data :');
-      //print(data);
+      data["date"] = data["date2"] ?? "";
+      data["time"] = data["time2"] ?? "";
+
+      // ✅ Signal Strength Extraction - Safely split first part
+      if (data["signal_strength"] != null) {
+        List<String> parts = data["signal_strength"].split(" ");
+        data["signal_strength"] = parts.isNotEmpty ? parts[0].trim() : "";
+      }
+
+      // ✅ Convert "nro" to Roman Numerals only if it exists and is a valid number
+      if
+      (data.containsKey("nro") && data["nro"] != null && data["nro"].toString().isNotEmpty) {
+        data["nro"] = AddressHelper.convertToRoman(data["nro"]);
+      } else {
+        data["nro"] = ""; // Provide a default value if necessary
+      }
 
       List<CellValue> rowData = dataList.map((title) {
         return TextCellValue(data[title]?.toString() ?? ""); // Convert nulls to empty strings
       }).toList();
-      //print(rowData);
+
       sheet.appendRow(rowData);
-      print ('rowData : $rowData');
     }
 
     String timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
     Directory? directory;
     if (Platform.isAndroid) {
-      directory = Directory('/storage/emulated/0/Download'); // ✅ Save in Internal Storage Downloads
+      directory = await getExternalStorageDirectory(); // Use safer storage API
     } else if (Platform.isIOS) {
       directory = await getApplicationDocumentsDirectory();
     }
 
-    final filePath = "${directory!.path}/NetmesHEasyAid_$timestamp.xlsx";
+    if (directory == null) {
+      debugPrint("❌ Error: Unable to find a storage directory.");
+      return null;
+    }
+
+    final filePath = "${directory!.path}/NetmeshAssist_$timestamp.xlsx";
     File file = File(filePath);
 
     try {
@@ -120,16 +133,4 @@ class ExcelHelper {
       return null; // Return null if there's an error
     }
   }
-
-/*
-  Future<void> checkFileExists() async {
-    File file = File('/storage/emulated/0/Download/NetmesHEasyAid_20250323_095813.xlsx');
-
-    if (await file.exists()) {
-      print("✅ File exists at: ${file.path}");
-    } else {
-      print("❌ File NOT found.");
-    }
-  }
-   */
 }

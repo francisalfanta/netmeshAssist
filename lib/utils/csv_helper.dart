@@ -23,6 +23,7 @@ class CsvHelper {
     csvContent.writeln(headers.join(",")); // ✅ Write headers
 
     for (var data in extractedData) {
+      data["rssi"] = data["signal_strength"].split(" ")[0].trim();
       List<String> row = headers.map((title) => '"${data[title]?.toString() ?? ""}"').toList();
       csvContent.writeln(row.join(","));
     }
@@ -35,7 +36,7 @@ class CsvHelper {
       directory = await getApplicationDocumentsDirectory();
     }
 
-    final filePath = "${directory!.path}/NetmesHEasyAid_$timestamp.csv";
+    final filePath = "${directory!.path}/NetmeshAssist_$timestamp.csv";
     File file = File(filePath);
 
     try {

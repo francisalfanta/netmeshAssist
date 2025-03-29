@@ -1,3 +1,22 @@
+v1.0.9
+March 29, 2025
+ - Fixed missing UL/DL value.
+ - Resolved image upload when the first line of text is an email.
+ - Added support for jfif file
+
+v1.0.8
+March 28, 2025
+ - Set a fallback value when Barangay name is missing in Google Geocoding.
+ - Resolved issues with value separation.
+ - Implemented bubble count for Cards.
+ - Added fixed labels for Duplicate and Unsuccessful in the App Bar.
+
+v1.0.7
+Macrch 27, 2025
+ - Corrected date & time output for Mobile Brand Speed Validation Export Report.
+ - Resolved missing rssi value.
+ - Fixed export hang issue for MBSV Report exceeding  20 records.
+
 v1.0.6
 March 26, 2025
  - Switched to Google Geocoding API for improved accuracy instead of Geoapify.

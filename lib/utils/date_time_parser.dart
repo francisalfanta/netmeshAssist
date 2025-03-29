@@ -34,6 +34,22 @@ String? parseTime(String text) {
   return "??";
 }
 
+String? parseTime2(String text) {
+  RegExp timeRegex = RegExp(r"(\d{1,2}):(\d{2}):\d{2}\s(AM|PM)");
+  Match? match = timeRegex.firstMatch(text);
+
+  if (match != null) {
+    int hour = int.parse(match.group(1)!);
+    String minute = match.group(2)!;
+    String ampm = match.group(3)!;
+
+    return "${hour.toString().padLeft(2, '0')}:$minute $ampm"; // HH:MM AM/PM format
+  }
+
+  //print("❌ Time not found in: $text");
+  return "??";
+}
+
 String? parseDate2(String text) {
   RegExp dateRegex = RegExp(r"\b([A-Za-z]{3}),\s(\d{1,2})/(\d{1,2})/(\d{4})\b"); // date with s after Day,
   Match? match = dateRegex.firstMatch(text);
@@ -53,6 +69,44 @@ String? parseDate2(String text) {
     String month = match2.group(2)!;
     String day = match2.group(3)!;
     String year = match2.group(4)!;
+
+    // Convert numeric month to short month name (MMM)
+    List<String> months = [
+      "", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    int monthIndex = int.parse(month);
+    String monthAbbr = months[monthIndex];
+
+    // Format as dd-MMM-yy
+    return "$day-$monthAbbr-${year.substring(2)}";
+    //return "$month/$day/$year"; // YYYY-MM-DD format
+  }
+
+  return "??";
+}
+
+String? parseDate3(String text) { // output format // YYYY-MM-DD format
+  RegExp dateRegex = RegExp(r"\b([A-Za-z]{3}),\s(\d{1,2})/(\d{1,2})/(\d{4})\b"); // date with s after Day,
+  Match? match = dateRegex.firstMatch(text);
+
+  if (match != null) {
+    String month = match.group(2)!;
+    String day = match.group(3)!;
+    String year = match.group(4)!;
+    return "$month/$day/$year"; // YYYY-MM-DD format
+  }
+
+  RegExp dateRegex2 = RegExp(r"\b([A-Za-z]{3}),(\d{1,2})/(\d{1,2})/(\d{4})\b"); // date with no spaces
+  String strDate = findDate(text) ?? "??";
+  Match? match2 = dateRegex2.firstMatch(strDate.replaceAll(RegExp(r'\s+'), ''));
+
+  if (match2 != null) {
+    String month = match2.group(2)!;
+    String day = match2.group(3)!;
+    String year = match2.group(4)!;
+
     return "$month/$day/$year"; // YYYY-MM-DD format
   }
 
@@ -61,7 +115,7 @@ String? parseDate2(String text) {
 
 String? extractDateTimestamp(String text) {
   // print("text : $text");
-  String setDate = parseDate2(text) ?? "";
+  String setDate = parseDate3(text) ?? "";
   String setTime = parseTime(text) ?? "";
 
   if (setDate  == null && setTime == null) {

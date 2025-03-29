@@ -32,37 +32,46 @@ class Google_GeocodingService {
 
             for (var component in addressComponents) {
               List<String> types = List<String>.from(component["types"] ?? []);
-              print('component : $component');
+              String longName = component["long_name"] ?? "??";
+              String shortName = component["short_name"] ?? "";
+
+              if (types.contains("locality") && formattedData["city"]!.isEmpty) {
+                formattedData["city"] = longName;
+              }
+              if (types.contains("administrative_area_level_2") && formattedData["province"]!.isEmpty) {
+                formattedData["province"] = longName;
+              }
+              if (types.contains("administrative_area_level_1") && formattedData["region"]!.isEmpty) {
+                formattedData["region"] = longName;
+              }
+
+              if (result.containsKey("formatted_address") && result["formatted_address"] != null) {
+                formattedData["formatted"] = result["formatted_address"];
+              } else {
+                formattedData["formatted"] = "??"; // Default value if key is missing or null
+              }
 
               if (types.contains("sublocality_level_2")) {
-                print("Sublocality Level 2: ${component["long_name"]}");
-                formattedData["suburb"] = component["short_name"] ?? "";
+                formattedData["suburb"] = shortName;
+                formattedData["formatted"] = result["formatted_address"] ?? "??";
 
-                // Fill the formattedData based on this result group
-                formattedData["suburb"] = component["long_name"] ?? "Unknown";
-                formattedData["formatted"] =
-                    result["formatted_address"] ?? "Unknown";
-
-                for (var comp in addressComponents) {
-                  List<String> compTypes = List<String>.from(
-                      comp["types"] ?? []);
-
-                  if (compTypes.contains("locality")) {
-                    formattedData["city"] = comp["long_name"] ?? "Unknown";
-                  } else
-                  if (compTypes.contains("administrative_area_level_2")) {
-                    formattedData["province"] = comp["long_name"] ?? "Unknown";
-                  } else
-                  if (compTypes.contains("administrative_area_level_1")) {
-                    formattedData["region"] = comp["long_name"] ?? "Unknown";
-                  }
-                }
-                print('formattedData : $formattedData');
                 return formattedData; // Stop searching once found
               }
             }
+
           }
         }
+        if (formattedData["suburb"] == null || formattedData["suburb"]!.isEmpty) {
+          List<String> parts = [
+            formattedData["city"] ?? "",
+            formattedData["province"] ?? "",
+            formattedData["region"] ?? ""
+          ].where((value) => value.isNotEmpty).toList();
+
+          formattedData["formatted"] = parts.isNotEmpty ? parts.join(", ") : "??";
+        }
+
+        return formattedData;
       } else {
         //print("Error: ${response.statusCode} - ${response.body}");
       }

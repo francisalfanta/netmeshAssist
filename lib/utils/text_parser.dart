@@ -4,7 +4,6 @@ import 'package:netmeshAssist/utils/provider_helper.dart';
 Map<String, String> parseExtractedText(String text) {
   Map<String, String> data = {};
   List<String> lines = text.split("\n").map((line) => line.trim()).toList();
-  //print(lines);
 
   // List of possible date prefixes
   List<String> daysOfWeek = ["Mon,", "Tue,", "Wed,", "Thu,", "Fri,", "Sat,", "Sun,"];
@@ -22,7 +21,6 @@ Map<String, String> parseExtractedText(String text) {
 
   void extractValue(String line, String keyword, String key) {
     if (line.contains(keyword)) {
-
       String valuePart = line.split(":")[1].trim();
 
       // Handle special case for "Signal Quality" (extract both dBm value and quality)
@@ -54,19 +52,43 @@ Map<String, String> parseExtractedText(String text) {
     }
   }
 
+  void checkMissingDownloadUpload(List<String> lines, Map<String, String> data, int setStartingIndex) {
+    if (!data.containsKey("download") || !data.containsKey("upload")) {
+      for (int j = setStartingIndex - 1; j >= 0; j--) {
+        String prevLine = lines[j];
+
+        extractValue(prevLine, "Download:", "download");
+        extractValue(prevLine, "Upload:", "upload");
+
+        // If both values are found, exit the loop early
+        if (data.containsKey("download") && data.containsKey("upload")) {
+          break;
+        }
+      }
+    }
+  }
+
   String currentGroup = "";
   bool inGroup = false;
   bool foundCompleteGroup = false;
+  int setStartingIndex = 0;
 
   for (int i = 0; i < lines.length; i++) {
     String line = lines[i];
-    //print(line);
+
     if(!foundCompleteGroup) {
       // ✅ Start collecting when a line contains a date and time
       if (daysOfWeek.any((day) => line.startsWith(day)) && !inGroup) {
         inGroup = true;
         data.clear(); // Reset data to keep only the latest valid group
         currentGroup = "";
+
+        // set Starting Date Index
+        setStartingIndex = i;
+      } else if (daysOfWeek.any((day) => line.startsWith(day)) && inGroup) {
+        // if there's another date with day, reset data
+          data.clear(); // Reset data to keep only the latest valid group
+          currentGroup = "";
       }
 
       if (inGroup) {
@@ -88,28 +110,35 @@ Map<String, String> parseExtractedText(String text) {
       extractValue(line, "Cell ID:", "cell_id");
 
       // Extract email (signals the end of a group)
+      if (hasValidEmail(line) && !inGroup) {  // when the email is ahead than date
+        data.clear(); // Reset data to keep only the latest valid group
+        currentGroup = "";
+      }
       // print( line.replaceAll(" ", ""));
-      if (hasValidEmail(line)) {
+      if (hasValidEmail(line) && inGroup) {
         data["email"] = line.replaceAll(RegExp(r"\s+"), "");
         inGroup = false; // End group detection
 
-        //print('currentGroup');
-        //print(currentGroup.trim());
         // ✅ Extract Date & Time from this valid group
         String? extractedDate = parseDate(currentGroup.trim());
+        String? extractedDate2 = parseDate2(currentGroup.trim());
         //print('extractedDate : $extractedDate');
-        if (extractedDate != null) {
+        if (extractedDate != null && extractedDate2 != null) {
           data["date"] = extractedDate;
+          data["date2"] = extractedDate2 ;
           data["timestamp"] = extractDateTimestamp(currentGroup.trim()) ?? "";
         }
 
-        String? extractedTime = parseTime(currentGroup.trim());
-        if (extractedTime != null) {
+        String? extractedTime = parseTime(currentGroup.trim()); // HH:MM
+        String? extractedTime2 = parseTime2(currentGroup.trim()); // HH:MM AM/PM
+        if (extractedTime != null && extractedTime2 != null) {
           data["time"] = extractedTime;
+          data["time2"] = extractedTime2;
         }
 
         foundCompleteGroup = true; // Mark as complete
       }
+
     }
   }
   // If no email is found, notify the user to upload a screenshot
@@ -120,10 +149,10 @@ Map<String, String> parseExtractedText(String text) {
       "error": "❌ No valid email found. Please upload a screenshot from Speedtest History showing the Date at the top and Email below."
     };
   }
+
+  // check data contain Download or Upload
+  checkMissingDownloadUpload(lines, data, setStartingIndex);
   //print(data);
-  // print("🟡 Current Group: $currentGroup");
-  // print("Signal Quality :  ${data["signal_quality"]}");
-  // print("📆 Date Found: ${data["date"]}");
-  // print("⏰ Time Found: ${data["time"]}");
+
   return data;
 }

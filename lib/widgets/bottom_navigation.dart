@@ -15,7 +15,6 @@ class BottomNavigation extends StatelessWidget {
     String? filePath = await excelHelper.saveToExcel(extractedData);
 
     if (filePath != null) {
-      //print("Sharing");
       Share.shareFiles(
         [filePath],
         text: "📂 Here's the extracted Excel file from NetmesHelper.",
@@ -30,7 +29,6 @@ class BottomNavigation extends StatelessWidget {
     String? filePath = await excelHelper.saveToExcelMBSVReport(extractedData);
 
     if (filePath != null) {
-      //print("Sharing");
       Share.shareFiles(
         [filePath],
         text: "📂 Here's the extracted Excel file from NetmesHelper.",
@@ -46,7 +44,6 @@ class BottomNavigation extends StatelessWidget {
     String? filePath = await csvHelper.saveToCsv(extractedData);
 
     if (filePath != null) {
-      //print("Sharing CSV");
       Share.shareFiles(
         [filePath],
         text: "📂 Here's the extracted CSV file from NetmesHelper.",
@@ -87,7 +84,7 @@ class BottomNavigation extends StatelessWidget {
           // Add the version number in the center of the BottomAppBar
           Center(
             child: Text(
-              'v1.0.6', // The version number
+              'v1.0.9', // The version number
               style: TextStyle(
                 fontSize: 10,
                 color: Colors.black,

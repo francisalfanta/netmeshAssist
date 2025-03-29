@@ -14,6 +14,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async  {
   await dotenv.load();
+
   runApp(const MaterialApp(home: NetmesHelperApp()));
 }
 
@@ -29,6 +30,7 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> {
   final mapEquality = const MapEquality();
 
   List<Map<String, dynamic>> speedTestData = [];
+  List<Map<String, dynamic>> speedTestDataStatic = []; // Static copy of speedTestData before removals
   List<Map<String, dynamic>> onextractedData = [];
   String overallText = "";
   String failedProcessedText = "0";
@@ -57,12 +59,14 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> {
               speedTestData.add(item); // ✅ Add unique items
             }
           }
+
+          // ✅ Reset and then update speedTestDataStatic
+          speedTestDataStatic.clear(); // Clear previous data
+          speedTestDataStatic = List.from(speedTestData); // Assign fresh copy
         });
       },
       onExtractedData: (data) {
         setState(() {
-          print('onExtractedData');
-          print(data);
           for (var item in data) {
             bool isDuplicate  = onextractedData.any((existingItem) => mapEquality.equals(existingItem, item));  // ✅ Deep comparison of all key-value pairs
 
@@ -82,11 +86,11 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> {
       },
       onLoading: (loading) {
         if (!loading) {
-          Future.delayed(const Duration(seconds: 2), () {  // ✅ Delay hiding for 2 seconds
+          //Future.delayed(const Duration(seconds: 2), () {  // ✅ Delay hiding for 2 seconds
             setState(() {
               isLoading = loading;
             });
-          });
+          //});
         } else {
           setState(() {
             isLoading = loading;
@@ -109,9 +113,22 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    speedTestDataStatic = List.from(speedTestData);  // ✅ Store a full copy
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(showModal: showModal, onClear: _clearData),
+      appBar: AppBarWidget(
+        showModal: showModal,
+        onClear: _clearData,
+        overallText: processed,
+        failedProcessedText: failedProcessedText,
+        duplicateCount: duplicateCount,
+        speedTestDataLength: onextractedData.length, // Pass the length here
+      ),
 
       body: Padding(
         padding: const EdgeInsets.all(4.0),
@@ -119,7 +136,60 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> {
           children: [
             const SpeedTestHeader(),
             const SizedBox(height: 4),
-            SpeedTestList(speedTestData: speedTestData, getSignalColor: getSignalColor, isLoading: isLoading),  // Pass the isLoading value here),
+            //SpeedTestList(speedTestData: speedTestData, getSignalColor: getSignalColor, isLoading: isLoading),  // Pass the isLoading value here),
+            SpeedTestList(
+              speedTestData: speedTestData,
+              getSignalColor: getSignalColor,
+              isLoading: isLoading,
+              onRemove: (index) {
+                setState(() {
+                  if (speedTestDataStatic.isEmpty || index >= speedTestDataStatic.length) {
+                    print("⚠️ Invalid index or static data is empty!");
+                    return;
+                  }
+                  // ✅ Store the item before removing it
+                  final removedItem = speedTestDataStatic![index];
+
+                  /// ✅ Find & remove the corresponding item in `speedTestData`
+                  int matchIndex = onextractedData.indexWhere((item) =>
+                      item["email"] == removedItem["email"] &&
+                      item["timestamp"].toString() == removedItem["timestamp"].toString() &&  // Ensure same type
+                      item["phone_model"] == (removedItem["phone_model"] ?? removedItem["Model"])  // Check both keys
+                  );
+
+                  // 🚨 Prevent crash if item is not found
+                  if (matchIndex != -1) {
+                    onextractedData.removeAt(matchIndex);
+                  } else {
+                    print("⚠️ Item not found in onextractedData. Skipping removal.");
+                  }
+
+                  // Show SnackBar with undo option
+                  //ScaffoldMessenger.of(context).showSnackBar(
+                  //  SnackBar(
+                  //    content: Text("Item removed"),
+                  //    action: SnackBarAction(
+                  //      label: "UNDO",
+                  //      onPressed: () {
+                  //        setState(() {
+                  //          speedTestData.insert(index, removedItem);
+
+                            // ✅ Restore the corresponding item in `onextractedData`
+                  //          final extractedItem = {
+                  //            "someKey": removedItem["matchingKey"],
+                  //            "otherData": "restored data",
+                  //          };
+
+                  //          onextractedData.insert(index, removedItem);
+                  //        });
+                  //      },
+                  //    ),
+                  //  ),
+                  //);
+                });
+              },
+            ),
+
             const SizedBox(height: 10),
             // Show notifyUser at the bottom-right only when loading
             if (isLoading)
@@ -138,16 +208,6 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> {
                       Text(
                         "Processing : $overallText",
                         style: const TextStyle(fontSize: 10),
-                      ),
-                      SizedBox(height: 4),  // Add some space between the texts
-                      Text(
-                        "Unsuccessful : $failedProcessedText",  // Second line showing failedProcessedText
-                        style: const TextStyle(fontSize: 10, color: Colors.red),  // Style for failed text
-                      ),
-                      SizedBox(height: 4),  // Add some space between the texts
-                      Text(
-                        "Duplicate : $duplicateCount",  // Second line showing duplicateCount
-                        style: const TextStyle(fontSize: 10, color: Colors.orange),  // Style for failed text
                       ),
                     ],
                   ),

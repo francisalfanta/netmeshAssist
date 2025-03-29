@@ -2,18 +2,27 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'text_parser.dart';  // ✅ Ensure you import the text parsing function
+import 'package:image/image.dart' as img;
+import 'package:file_picker/file_picker.dart';
 
 class ImageTextExtractor {
   final ImagePicker _picker = ImagePicker();
 
   Future<List<Map<String, dynamic>?>> extractTextFromPickedImage() async {
-    //final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    final List<XFile> images = await _picker.pickMultiImage();
-    if (images.isEmpty) return [];
+    //final List<XFile> images = await _picker.pickMultiImage();
+    //if (images.isEmpty) return [];
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image, // Only allow images
+      allowMultiple: true,  // Enable multiple selection
+    );
+
+    if (result == null) return []; // If the user cancels
+    List<File> images = result.paths.map((path) => File(path!)).toList();
 
     List<Map<String, dynamic>> extractedData = [];
 
-    for (XFile image in images) {
+    for (File image in images) {
       List<Map<String, dynamic>> result = await _extractTextFromImage(File(image.path));
 
       // Check if the result contains an error message
@@ -29,14 +38,16 @@ class ImageTextExtractor {
   }
 
   Future<List<Map<String, dynamic>>> _extractTextFromImage(File imageFile) async {
+    File processedImage = await _handleJfifFile(imageFile); // ✅ Handle .jfif conversion
+
     final inputImage = InputImage.fromFile(imageFile);
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     //final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
 
     try {
       final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-      //print('recognizedText');
-      //print(recognizedText.text);
+      //print('recognizedText $recognizedText.text');
+
       final parsedData = parseExtractedText(recognizedText.text);
 
       // Check if parsed data contains an error message
@@ -50,4 +61,26 @@ class ImageTextExtractor {
       textRecognizer.close(); // ✅ Always close recognizer
     }
   }
+
+  Future<File> _handleJfifFile(File imageFile) async {
+    String filePath = imageFile.path;
+
+    if (filePath.toLowerCase().endsWith('.jfif')) {
+      // ✅ Convert .jfif to .jpg using the image package
+      img.Image? image = img.decodeImage(await imageFile.readAsBytes());
+
+      if (image != null) {
+        String newFilePath = filePath.replaceAll('.jfif', '.jpg');
+        File newFile = File(newFilePath);
+        await newFile.writeAsBytes(img.encodeJpg(image));
+        //print("✅ Converted .jfif to .jpg: $newFilePath");
+        return newFile;
+      } else {
+        print("❌ Error decoding .jfif image");
+      }
+    }
+
+    return imageFile; // Return original file if no conversion is needed
+  }
+
 }

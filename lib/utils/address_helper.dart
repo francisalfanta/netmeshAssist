@@ -80,39 +80,40 @@ class AddressHelper {
       return regionToNTC[regionUpperCase]!;
     } else {
       // Return a default message if region is not found
-      return 'NTC CODE NOT FOUND';
+      return '??';
     }
   }
 
-  static String convertToRoman(String  ntcCode) {
-    String numericPart = ntcCode.split(" ")[1]; // Extract the number after "NTC"
-    if (numericPart.length < 1) return ntcCode; // Return original if no number
+  static String convertToRoman(String ntcCode) {
+    List<String> parts = ntcCode.split(" ");
 
-    int? number = int.parse(numericPart);
-    if (number == null || number <= 0) return ntcCode; // Return original if invalid
+    if (parts.length < 2) return ntcCode; // No space, return as is
 
-    List<MapEntry<int, String>> romanMap = [
-      MapEntry(10, "X"),
-      MapEntry(9, "IX"),
-      MapEntry(8, "VIII"),
-      MapEntry(7, "VII"),
-      MapEntry(6, "VI"),
-      MapEntry(5, "V"),
-      MapEntry(4, "IV"),
-      MapEntry(3, "III"),
-      MapEntry(2, "II"),
-      MapEntry(1, "I")
-    ];
+    String numericPart = parts[1];
+    int? number = int.tryParse(numericPart);
 
-    String result = "";
-    int safeNumber = number; // Ensure number is non-null
+    if (number == null || number <= 0) return ntcCode; // Invalid number, return as is
 
-    for (var entry in romanMap) {
+    // Roman numeral mapping
+    final Map<int, String> romanMap = {
+      10: "X", 9: "IX", 8: "VIII", 7: "VII", 6: "VI",
+      5: "V", 4: "IV", 3: "III", 2: "II", 1: "I"
+    };
+
+    // ✅ **If number is already mapped, return directly**
+    if (romanMap.containsKey(number)) return romanMap[number]!;
+
+    StringBuffer result = StringBuffer();
+    int safeNumber = number;
+
+    // Convert number to Roman numeral
+    for (var entry in romanMap.entries) {
       while (safeNumber >= entry.key) {
-        result += entry.value;
+        result.write(entry.value);
         safeNumber -= entry.key;
       }
     }
-    return result;
+
+    return result.toString();
   }
  }
