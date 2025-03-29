@@ -1,7 +1,7 @@
 # Net Mesh Speedtest Assist
 
 Features
-- Automatic Entry from Screenshot (JPG, JPEG, BMP, PNG files)
+- Automatic Entry from Screenshot (JPG, JPEG, BMP, PNG and JFIF files)
   - Automatically enters data from the Speed Test screenshot taken from the History page for easy access.
   - Ignore duplicate entries during upload.
 - Export Data (XLSX/CSV)
@@ -12,7 +12,7 @@ Features
 
 Limitation
 - The app is exclusively available for Android.
-- Supports image uploads only in the following formats: JPG, JPEG, BMP, and PNG.
+- Supports image uploads only in the following formats: JPG, JPEG, BMP, PNG and JFIF(if phone support).
 - Google Geolocation API Request Limit
   - The app uses Google Geolocation API with a maximum of 1333 free requests per day.
 - Effect Beyond
@@ -34,22 +34,7 @@ This Flutter app supports:
   
 ### Release Notes
 
-##### [Android APK v1.0.7]([https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=drive_link])
-
-March 26, 2025
- - Used Google Geocoding API instead than Geoapify for more accuracy.
- - Added Clear lists button
- - Added Export to xlsx formatted to MobileBroadband Speed Validation Report
- - Fixed Date out when date character contain spaces in between.
-
- March 25, 2025
- - Added short name for providers
-
- March 24, 2025
- - Fixed issue with exporting
-
- March 23, 2025
- - Initial launch, testing different type of History Report image.
+##### [Android APK v1.0.9]([https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=drive_link])
 
 [Introduction to Getting Started with Net Mesh Assist](https://drive.google.com/file/d/1cmgrCsu5mUBlnLMpdnMwwkYPxnYoC9sX/view?usp=sharing)
 
