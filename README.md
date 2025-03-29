@@ -34,7 +34,7 @@ This Flutter app supports:
   
 ### [Release Notes](Release%20Notes)
 
-##### [Android APK v1.0.9]([https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=drive_link])
+##### [Android APK v1.0.9](https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=drive_link)
 
 [Introduction to Getting Started with Net Mesh Assist](https://drive.google.com/file/d/1cmgrCsu5mUBlnLMpdnMwwkYPxnYoC9sX/view?usp=sharing)
 
