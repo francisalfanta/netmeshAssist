@@ -32,7 +32,7 @@ This Flutter app supports:
 - Minimum SDK: 21 (Android 5.0 - Lollipop, Released in 2014)
 - Target SDK: 35 (Android 14, Released in 2024)
   
-### Release Notes
+### [Release Notes](Release%20Notes)
 
 ##### [Android APK v1.0.9]([https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=drive_link])
 
