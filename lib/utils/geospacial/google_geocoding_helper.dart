@@ -8,6 +8,10 @@ class Google_GeocodingService {
 
   Future<Map<String, String>> getAddressFromLatLng(double lat,
       double lng) async {
+    await Future.delayed(Duration(seconds: 2)); // Prevents exceeding quota
+    //print('lat : $lat');
+    //print('long : $lng');
+
     String url =
         "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$apiKey";
 
@@ -29,7 +33,7 @@ class Google_GeocodingService {
           for (var result in data["results"]) { // Loop through all results
             List<dynamic> addressComponents = result["address_components"] ??
                 [];
-
+            //print('addressComponents : $addressComponents');
             for (var component in addressComponents) {
               List<String> types = List<String>.from(component["types"] ?? []);
               String longName = component["long_name"] ?? "??";

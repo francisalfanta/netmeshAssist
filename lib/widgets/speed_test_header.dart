@@ -51,7 +51,7 @@ class SpeedTestHeader extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                Expanded(flex: 1, child: Center(child: Icon(Icons.check_circle, color: Colors.green, size: 15))),
+                Expanded(flex: 1, child: Center(child: Icon(Icons.location_pin, color: Colors.blue, size: 15))),
                 Expanded(
                   flex: 6,
                   child: Tooltip(
