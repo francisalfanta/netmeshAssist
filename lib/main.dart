@@ -12,6 +12,9 @@ import 'package:netmeshAssist/widgets/speed_test_header.dart';
 import 'package:netmeshAssist/widgets/speed_test_list.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+
 void main() async  {
   await dotenv.load();
 
@@ -25,7 +28,7 @@ class NetmesHelperApp extends StatefulWidget {
   _NetmesHelperAppState createState() => _NetmesHelperAppState();
 }
 
-class _NetmesHelperAppState extends State<NetmesHelperApp> {
+class _NetmesHelperAppState extends State<NetmesHelperApp> with WidgetsBindingObserver {
   final PickImageHelper pickImageHelper = PickImageHelper();
   final mapEquality = const MapEquality();
 
@@ -110,12 +113,60 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> {
       processed = 0;
       overall = 0;
     });
+
+    // Call cleanup function to remove temporary files when data is cleared
+    cleanUpTemporaryImageFiles();
+  }
+
+  Future<void> cleanUpTemporaryImageFiles() async {
+    final externalDir = await getExternalStorageDirectory();
+
+    if (externalDir != null) {
+      // Trying a different path for external storage
+      final generalExternalDir = Directory('/storage/emulated/0/Pictures'); // General public storage path
+
+      if (await generalExternalDir.exists()) {
+        //print("Looking for files in: ${generalExternalDir.path}");
+        final currentYear = DateTime.now().year.toString();         // Get the current year
+
+        generalExternalDir.listSync().forEach((file) {
+          if (file is File && file.path.endsWith('.jpg') && file.path.contains('JPEG_')) {
+            //print("Deleting file: ${file.path}");
+            file.deleteSync();
+          }
+        });
+      } else {
+        //print("General Pictures directory does not exist.");
+      }
+    }
   }
 
   @override
   void initState() {
     super.initState();
     speedTestDataStatic = List.from(speedTestData);  // ✅ Store a full copy
+    // Register the observer for lifecycle changes
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Clean up temporary files when the widget is disposed
+    cleanUpTemporaryImageFiles();
+    // Unregister the observer
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+      // App is going to the background or being closed
+      //print("App is going to the background or being closed");
+      cleanUpTemporaryImageFiles();  // Call cleanup when app goes to background or is closed
+    }
   }
 
   @override

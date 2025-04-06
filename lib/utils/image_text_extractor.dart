@@ -67,17 +67,7 @@ class ImageTextExtractor {
 
     if (filePath.toLowerCase().endsWith('.jfif')) {
       // ✅ Convert .jfif to .jpg using the image package
-      img.Image? image = img.decodeImage(await imageFile.readAsBytes());
-
-      if (image != null) {
-        String newFilePath = filePath.replaceAll('.jfif', '.jpg');
-        File newFile = File(newFilePath);
-        await newFile.writeAsBytes(img.encodeJpg(image));
-        //print("✅ Converted .jfif to .jpg: $newFilePath");
-        return newFile;
-      } else {
-        print("❌ Error decoding .jfif image");
-      }
+     return imageFile;
     }
 
     return imageFile; // Return original file if no conversion is needed

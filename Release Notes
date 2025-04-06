@@ -1,4 +1,7 @@
 v1.0.10
+April 6, 2025
+ - Clean up temporary images after app closure or list clearing.
+
 April 5, 2025
  - Adding 2 seconds delay per request due to free account limit
 

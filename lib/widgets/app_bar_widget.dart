@@ -75,7 +75,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                     children: [
                       const Text("Version 1.0.8", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                       const Text("Release Date: March 23, 2025", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
-                      const Text("https://github.com/francisalfanta/netmeshEasyAid", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
+                      const Text("https://github.com/francisalfanta/netmeshAssist", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
                       const SizedBox(height: 12),
                       const Text("Features:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                       _buildListItem(Icons.check, "Automatic Data Entry", ["Automatically extracts data from Speed Test screenshots. (JPG, JPEG, BMP, PNG files)",]),
