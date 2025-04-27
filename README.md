@@ -30,9 +30,9 @@ This is the project [write-up.](https://drive.google.com/file/d/1bYZinNMpYV1GYZP
 | <div align="center"><b>Accepted Ookla Result Screenshot</b></div> | <div align="center"><b>Not Accepted Ookla Result Screenshot</b></div> |
 |-------------|--------------|
 | <div align="center">
-    <img src="https://github.com/francisalfanta/netmeshAssist/blob/master/ookla_result_page1.jfif" width="25%" />
+    <img src="ookla_result_page1.jfif" width="25%" />
     <span style="display:inline-block; width:20px;"></span>
-    <img src="https://github.com/francisalfanta/netmeshAssist/blob/master/ookla_result_page2.jfif" width="25%" />
+    <img src="ookla_result_page2.jfif" width="25%" />
 </div> | <div align="center">
     <img src="assets/images/wrong_screenshot_page1.jpg" width="25%" />
     <span style="display:inline-block; width:20px;"></span>
