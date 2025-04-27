@@ -84,7 +84,7 @@ class BottomNavigation extends StatelessWidget {
           // Add the version number in the center of the BottomAppBar
           Center(
             child: Text(
-              'v1.0.10', // The version number
+              'v1.3.14', // The version number
               style: TextStyle(
                 fontSize: 10,
                 color: Colors.black,

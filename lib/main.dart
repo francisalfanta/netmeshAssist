@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:collection/collection.dart';
 
 import 'package:netmeshAssist/utils/signal_helper.dart';  // ✅ Import the file
@@ -14,6 +15,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:netmeshAssist/models/device_model.dart';
 
 void main() async  {
   await dotenv.load();
@@ -38,7 +41,7 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> with WidgetsBindingOb
   String overallText = "";
   String failedProcessedText = "0";
   bool isLoading = false;
-  String notifyUser = "Choose a screenshot from the History Results in NetMesh Speedtest to extract text.";
+  String notifyUser = "Choose a screenshot from the History Results in NetMesh or Ookla Speedtest to extract text.";
   int duplicateCount = 0;
   int processed = 0;
   int overall = 0;
@@ -50,9 +53,12 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> with WidgetsBindingOb
     overall = 0;
 
     pickImageHelper.pickImage(
+      preExtractedData: List<Map<String, dynamic>>.from(onextractedData),
+      preonSpeedTestData: List<Map<String, dynamic>>.from(speedTestData),
       onSpeedTestData: (data){
         setState((){
           //speedTestData = data;
+          speedTestData = [];
           for (var item in data) {
             bool isDuplicate  = speedTestData.any((existingItem) => mapEquality.equals(existingItem, item));  // ✅ Deep comparison of all key-value pairs
 
@@ -119,25 +125,23 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> with WidgetsBindingOb
   }
 
   Future<void> cleanUpTemporaryImageFiles() async {
-    final externalDir = await getExternalStorageDirectory();
+    final generalExternalDir = Directory('/storage/emulated/0/Pictures'); // General public storage path
 
-    if (externalDir != null) {
-      // Trying a different path for external storage
-      final generalExternalDir = Directory('/storage/emulated/0/Pictures'); // General public storage path
+    if (await generalExternalDir.exists()) {
+      try {
+        final files = generalExternalDir.listSync();
 
-      if (await generalExternalDir.exists()) {
-        //print("Looking for files in: ${generalExternalDir.path}");
-        final currentYear = DateTime.now().year.toString();         // Get the current year
-
-        generalExternalDir.listSync().forEach((file) {
+        for (var file in files) {
           if (file is File && file.path.endsWith('.jpg') && file.path.contains('JPEG_')) {
             //print("Deleting file: ${file.path}");
-            file.deleteSync();
+            await file.delete();
           }
-        });
-      } else {
-        //print("General Pictures directory does not exist.");
+        }
+      } catch (e) {
+        //print("Error while deleting files: $e");
       }
+    } else {
+      //print("General Pictures directory does not exist.");
     }
   }
 
@@ -147,6 +151,19 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> with WidgetsBindingOb
     speedTestDataStatic = List.from(speedTestData);  // ✅ Store a full copy
     // Register the observer for lifecycle changes
     WidgetsBinding.instance.addObserver(this);
+
+    // Schedule dialog to show after build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showInfoDialog();
+    });
+
+    List<DeviceModel> tobeupdatedModel = generateDeviceModelsWithPossibleModels(deviceLists);
+
+    // Print the updated models with quotation marks around each possible model
+    tobeupdatedModel.forEach((device) {
+      //print('Device: ${device.name}');
+      //print('Possible Models: ${device.possibleModels.map((model) => "'$model'").join(', ')}');
+    });
   }
 
   @override
@@ -168,6 +185,33 @@ class _NetmesHelperAppState extends State<NetmesHelperApp> with WidgetsBindingOb
       cleanUpTemporaryImageFiles();  // Call cleanup when app goes to background or is closed
     }
   }
+
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: true, // Prevent manual closing
+      builder: (context) => AlertDialog(
+        title: const Text(
+            'Disclaimer',
+            style: TextStyle(fontSize: 15),
+        ),
+        content: const Text(
+            'The app does not store extracted text in any database.',
+            style: TextStyle(fontSize: 12),
+        ),
+      ),
+    );
+
+    // Close it after 5 seconds
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted && Navigator.of(context, rootNavigator: true).canPop()) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+    });
+  }
+
+  List<DeviceModel> deviceLists = [
+  ];
 
   @override
   Widget build(BuildContext context) {

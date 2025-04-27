@@ -1,3 +1,14 @@
+v1.3.14
+ - Added device model list for phone model checks
+ - Fixed OCR translation issues with date and datetime in Ookla speedtest results.
+ - Adjusted comparison ratio for two screenshots per result
+ - Expanded device model name attribute to address OCR errors
+
+v1.2.10
+April 25, 2025
+ - Added Disclaimer message
+ - Can now read Ookla Speedtest Result
+
 v1.0.10
 April 6, 2025
  - Clean up temporary images after app closure or list clearing.

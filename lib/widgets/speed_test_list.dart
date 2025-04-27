@@ -66,8 +66,16 @@ class SpeedTestList extends StatelessWidget {
                               flex: 1,
                               child: Center(
                                 child: Tooltip(
-                                  message: getSignalTooltip(speedTestData[index]["Signal Quality"] ?? ""),
-                                  child: Icon(
+                                  message: speedTestData[index]["Signal Quality"] == "??"
+                                      ? "??"
+                                      : getSignalTooltip(speedTestData[index]["Signal Quality"] ?? ""),
+                                  child: speedTestData[index]["Signal Quality"] == "??"
+                                      ? Text(
+                                    "??",
+                                    style: TextStyle(fontSize: 12, color: Colors.redAccent), // Customize the style if needed
+
+                                  )
+                                      : Icon(
                                     Icons.signal_cellular_alt,
                                     color: getSignalColor(speedTestData[index]["Signal Quality"] ?? ""),
                                     size: 20,
@@ -101,9 +109,44 @@ class SpeedTestList extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Expanded(flex: 2, child: Text(speedTestData[index]["Ping"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
-                            Expanded(flex: 2, child: Text(speedTestData[index]["Jitter"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
-                            Expanded(flex: 2, child: Text(speedTestData[index]["Network Type"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
+                            Expanded(flex: 2, child: Text((speedTestData[index]["Ping"] ?? "??").toString(), style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
+                            Expanded(flex: 2, child: Text((speedTestData[index]["Jitter"] ?? "??").toString(), style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
+                            //Expanded(flex: 2, child: Text(speedTestData[index]["Network Type"] ?? "??", style: const TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
+                            Expanded(
+                              flex: 2,
+                              child: speedTestData[index]["Network Type"] != ''
+                                  ? Text(
+                                speedTestData[index]["Network Type"],
+                                style: const TextStyle(fontSize: 10),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              )
+                                  : (speedTestData[index]["Formatted Address"] != '??')
+                                  ? Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      Icons.search,
+                                      size: 20,
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 4.0, // Add a subtle shadow
+                                          color: Colors.black.withOpacity(0.5), // Dark color for better visibility
+                                          offset: Offset(2, 2), // Slight offset for shadow
+                                        ),
+                                      ]
+                                  ), // ✅ white icon on blue
+                                  color: Colors.redAccent,
+
+                                  onPressed: () {
+                                    //_fetchSignal();
+                                  },
+                                  tooltip: 'Fetch Signal', // ✅ accessibility tip
+                                  constraints: const BoxConstraints(), // ✅ Important: removes extra constraints, keeps it small
+                                  padding: EdgeInsets.zero,             // ✅ No extra padding inside IconButton
+                                ),
+                              )
+                                  : const SizedBox(), // ✅ Nothing if Formatted Address is NOT null
+                            ),
                           ],
                         ),
                       ],

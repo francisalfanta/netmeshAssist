@@ -7,7 +7,11 @@ String getProviderName(String provider) {
     return 'Smart';
   } else if (provider.toUpperCase().contains('GLOBE')) {
     return 'Globe';
+  } else if (provider.toUpperCase().contains('TNT')) {
+    return 'TNT';
+  } else if (provider.toUpperCase().contains('DITO')) {
+    return 'DITO';
   } else {
-    return provider.split(" ")[0];
+    return '';//provider.split(" ")[0];
   }
 }

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 String? parseDate(String text) {
   RegExp dateRegex = RegExp(r"\b([A-Za-z]{3}),\s(\d{1,2})/(\d{1,2})/(\d{4})\b");
   Match? match = dateRegex.firstMatch(text);
@@ -154,4 +156,60 @@ String? _formatDate(Match match) {
   ];
 
   return "${months[monthNum - 1]}-$day"; // MMM-dd format
+}
+
+String formatTimestamp(String timestamp) {
+  try {
+    final inputFormat = DateFormat('yyyy-MM-dd hh:mm a'); // "2025-04-19 04:43 PM"
+    final outputFormat = DateFormat('MMM-dd hh:mm'); // "Apr-19 04:43"
+
+    final dateTime = inputFormat.parse(timestamp);
+    return outputFormat.format(dateTime);
+  } catch (e) {
+    return timestamp; // fallback if parsing fails
+  }
+}
+
+bool isLeapYear(int year) {
+  // A year is a leap year if it's divisible by 4, but not by 100, except if it's divisible by 400.
+  return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+
+int isValidMonth(String? monthStr) {
+  if (monthStr != null) {
+    final month = int.tryParse(monthStr);
+
+    if (month != null && month <= 12) {
+      print('Valid month: $monthStr');
+      return month; // Valid month
+    } else {
+      print('Invalid or out-of-range month: $monthStr');
+      return -1;
+    }
+  }
+  return -1; // Invalid or null month
+}
+
+int? getValidDay(String? dayStr, int month, int year) {
+  if (dayStr != null) {
+    final day = int.tryParse(dayStr);
+
+    if (day != null) {
+      // List of days per month (index 0 = January, index 1 = February, ..., index 11 = December)
+      List<int> daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+      // Adjust for leap year
+      if (isLeapYear(year) && month == 2) {
+        daysInMonth[1] = 29; // February gets 29 days in a leap year
+      }
+
+      if (day >= 1 && day <= daysInMonth[month - 1]) {
+        print('Valid day: $dayStr');
+        return day;
+      } else {
+        print('Invalid or out-of-range day: $dayStr');
+      }
+    }
+  }
+  return null; // Return null for invalid or null day
 }

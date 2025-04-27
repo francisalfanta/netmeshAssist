@@ -26,10 +26,12 @@ class ExcelHelper {
     ];
 
     sheet.appendRow(headers.map((header) => TextCellValue(header)).toList());
-
+    print('extractedData : $extractedData');
     // ✅ Append each data row
     for (var data in extractedData) {
-      data["rssi"] = data["signal_strength"].split(" ")[0].trim();
+      //data["rssi"] = data["signal_strength"]R.split(" ")[0].trim();
+      data["rssi"] = (data["signal_strength"] ?? "").toString().split(" ")[0].trim();
+
       List<CellValue> rowData = headers.map((title) {
         return TextCellValue(data[title]?.toString() ?? ""); // Convert nulls to empty strings
       }).toList();
@@ -45,7 +47,7 @@ class ExcelHelper {
       directory = await getApplicationDocumentsDirectory();
     }
 
-    final filePath = "${directory!.path}/NetmeshAssist_$timestamp.xlsx";
+    final filePath = "${directory!.path}/NetmeshAssist_defaultformat_$timestamp.xlsx";
     File file = File(filePath);
 
     try {
@@ -121,7 +123,7 @@ class ExcelHelper {
       return null;
     }
 
-    final filePath = "${directory!.path}/NetmeshAssist_$timestamp.xlsx";
+    final filePath = "${directory!.path}/NetmeshAssist_mbvp_$timestamp.xlsx";
     File file = File(filePath);
 
     try {

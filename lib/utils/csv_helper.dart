@@ -23,7 +23,9 @@ class CsvHelper {
     csvContent.writeln(headers.join(",")); // ✅ Write headers
 
     for (var data in extractedData) {
-      data["rssi"] = data["signal_strength"].split(" ")[0].trim();
+      //data["rssi"] = data["signal_strength"].split(" ")[0].trim();
+      data["rssi"] = (data["signal_strength"] ?? "").toString().split(" ")[0].trim();
+
       List<String> row = headers.map((title) => '"${data[title]?.toString() ?? ""}"').toList();
       csvContent.writeln(row.join(","));
     }
