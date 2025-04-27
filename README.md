@@ -1,6 +1,7 @@
 # Net Mesh Speedtest Assist
 
 Features
+- Can read Ookla Speedtest Result as of v1.3.14 (need 2 screenshot per result) 
 - Automatic Entry from Screenshot (JPG, JPEG, BMP, PNG and JFIF files)
   - Automatically enters data from the Speed Test screenshot taken from the History page for easy access.
   - Ignore duplicate entries during upload.
