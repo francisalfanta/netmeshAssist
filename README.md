@@ -26,6 +26,10 @@ This is the project [write-up.](https://drive.google.com/file/d/1bYZinNMpYV1GYZP
 |-------------|--------------|
 | <div align="center"><img src="https://github.com/user-attachments/assets/6af97bcc-01fe-4537-b357-071958f43625" width="25%" /></div> | <div align="center"><img src="https://github.com/user-attachments/assets/08e78679-bd20-495c-bba9-19b1934025da" width="25%" /></div> |
 
+| <div align="center"><b>Accepted Ookla Result Screenshot</b></div> | <div align="center"><b>Not Accepted Ookla Result Screenshot</b></div> |
+|-------------|--------------|
+| <div align="center"><img src="https://github.com/user-attachments/assets/6af97bcc-01fe-4537-b357-071958f43625" width="25%" /></div> | <div align="center"><img src="https://github.com/user-attachments/assets/08e78679-bd20-495c-bba9-19b1934025da" width="25%" /></div> |
+
 ### 📱 Android Version Compatibility
 
 This Flutter app supports:
