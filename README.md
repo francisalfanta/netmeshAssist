@@ -30,7 +30,9 @@ This is the project [write-up.](https://drive.google.com/file/d/1bYZinNMpYV1GYZP
 | <div align="center"><b>Accepted Ookla Result Screenshot</b></div> |
 |-------------|
 | <div align="center"><img src="ookla_result_page1.jfif" width="25%" /> <span style="display:inline-block; width:20px;"></span><img src="ookla_result_page2.jfif" width="25%" /></div> | 
+
 | <div align="center"><b>Not Accepted Ookla Result Screenshot</b></div> | 
+|-------------|
 | <div align="center"><img src="assets/images/wrong_screenshot_page1.jpg" width="25%" /><span style="display:inline-block; width:20px;"></span><img src="assets/images/wrong_screenshot_page2.jpg" width="25%" /></div> |
 
 
@@ -44,7 +46,7 @@ This Flutter app supports:
 
 ##### [Android APK v1.3.14](https://drive.google.com/file/d/188wQP7SlPTE1zSdMISVthuosoftALAQ4/view?usp=drive_link)
 
-[Introduction to Getting Started with Net Mesh Assist](https://drive.google.com/file/d/1cmgrCsu5mUBlnLMpdnMwwkYPxnYoC9sX/view?usp=sharing)
+[Introduction to Getting Started with Net Mesh Assist](https://drive.google.com/file/d/1cmgrCsu5mUBlnLMpdnMwwkYPxnYoC9sX/view?usp=sharing)<br>
 [Ookla Speedtest Result to Net Mesh Assist](https://drive.google.com/file/d/1mtykfCWyG1JFqL6KD0e0SMLw8AbegXuu/view?usp=sharing)
 This guide helps you quickly get started with the NetMesh Assist app. It walks you through the setup process, starting from installation to understanding the basic functionalities and how to make the most out of the app. You’ll learn the key steps to get your project up and running with ease, including configuring your environment and using the core features effectively.
 
